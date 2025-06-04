@@ -42,6 +42,9 @@
 
         function getHash() {
             let hash = location.hash.replace(/^#/, '')
+            if (!hash) {
+                hash = location.pathname + 'index'; // 默认加载 index
+            }
             // 如果 hash 以 / 开头，去掉它
             if (hash.startsWith('/')) {
                 hash = hash.slice(1);
