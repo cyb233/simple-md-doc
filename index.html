@@ -80,7 +80,7 @@
         function loadMarkdownFromHash() {
             renderBackButton();
             const file = getHash();
-            fetch(`${file}.md`)
+            fetch(`/${file}.md`)
                 .then(response => {
                     if (!response.ok) throw new Error();
                     return response.text();
