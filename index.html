@@ -50,9 +50,9 @@
             if (hash.endsWith('.md')) {
                 hash = hash.slice(0, -3);
             }
-            // 如果 hash 为空，默认加载 index
-            if (!hash) {
-                hash = 'index';
+            // 如果 hash 指向的文件名为空，默认加载 index
+            if (!hash || hash.endsWith('/')) {
+                hash += 'index';
             }
             return hash;
         }
