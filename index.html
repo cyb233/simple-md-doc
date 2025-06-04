@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+    <script src="./js/marked.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 2em;
+        }
+
+        #content {
+            max-width: 800px;
+            margin: auto;
+        }
+
+        table {
+            width: 100%;
+            border: 1px solid #ddd;
+            border-collapse: collapse;
+            margin: 1em 0;
+        }
+
+        th {
+            text-align: left;
+        }
+
+        th,
+        td {
+            padding: 8px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="back-btn-container"></div>
+    <div id="content">加载中...</div>
+    <script>
+
+        function getHash() {
+            let hash = location.hash.replace(/^#/, '')
+            // 如果 hash 以 / 开头，去掉它
+            if (hash.startsWith('/')) {
+                hash = hash.slice(1);
+            }
+            // 如果 hash 以 .md 结尾，去掉它
+            if (hash.endsWith('.md')) {
+                hash = hash.slice(0, -3);
+            }
+            // 如果 hash 为空，默认加载 index
+            if (!hash) {
+                hash = 'index';
+            }
+            return hash;
+        }
+
+        function isIndexPage() {
+            let hash = getHash();
+            if (hash === 'index') {
+                return true;
+            }
+            return false;
+        }
+
+        function renderBackButton() {
+            const container = document.querySelector('#back-btn-container');
+            container.innerHTML = '';
+            if (!isIndexPage()) {
+                const a = document.createElement('a');
+                a.href = './';
+                a.style = 'display:inline-block;margin-bottom:1em;';
+                a.textContent = '← 返回';
+                container.appendChild(a);
+            }
+        }
+
+        function loadMarkdownFromHash() {
+            renderBackButton();
+            const file = getHash();
+            fetch(`${file}.md`)
+                .then(response => {
+                    if (!response.ok) throw new Error();
+                    return response.text();
+                })
+                .then(md => {
+                    // 提取 Markdown 第一行标题
+                    let title = 'Index';
+                    const match = md.match(/^#\s+(.+)$/m);
+                    if (match) {
+                        title = match[1].trim();
+                    }
+                    document.title = title;
+                    document.querySelector('#content').innerHTML = marked.parse(md);
+                    // 设置外链新标签页打开
+                    document.querySelectorAll('#content a').forEach(a => {
+                        if (a.hostname && a.hostname !== location.hostname) {
+                            a.target = '_blank';
+                            a.rel = 'noopener noreferrer';
+                        }
+                    });
+                })
+                .catch(() => {
+                    document.title = 'Index';
+                    document.querySelector('#content').textContent = `无法加载 ${file}.md 文件。`;
+                });
+        }
+
+        // 初始加载
+        loadMarkdownFromHash();
+
+        // 监听 hash 变化
+        window.addEventListener('hashchange', loadMarkdownFromHash);
+
+        // 拦截页面内跳转
+        document.addEventListener('click', function (e) {
+            const a = e.target.closest('a');
+            if (a && a.href && a.origin === location.origin) {
+                e.preventDefault();
+                location.hash = a.pathname;
+            }
+        });
+    </script>
+</body>
+
+</html>
