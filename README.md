@@ -16,18 +16,6 @@
 2. 在项目根目录下放置你的 Markdown 文件（如 `index.md`, `foo.md` 等）。
 3. 访问 `index.html`，即可浏览和跳转 Markdown 文档。
 
-## 目录结构示例
-
-```
-simple-md-doc/
-├── index.html
-├── js/
-│   └── marked.min.js
-├── index.md
-├── foo.md
-└── README.md
-```
-
 ## 依赖
 
 - [marked.js](https://github.com/markedjs/marked) 用于 Markdown 解析
