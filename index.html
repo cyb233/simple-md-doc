@@ -119,7 +119,8 @@
             const a = e.target.closest('a');
             if (a && a.href && a.origin === location.origin) {
                 e.preventDefault();
-                location.hash = a.pathname;
+                // 去除 .md 后缀以确保hash美观
+                location.hash = a.pathname.replace(/\.md$/, '');
             }
         });
     </script>
