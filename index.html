@@ -123,7 +123,9 @@
                 })
                 .then(md => {
                     if (testNotFoundFailbackToIndex) {
-                        if (md.trim().startsWith('<!DOCTYPE html>')) {
+                        const htmlIndicators = ['<!doctype html>', '<html', '<head', '<body'];
+                        const lowerMd = md.trim().toLowerCase();
+                        if (htmlIndicators.some(ind => lowerMd.includes(ind))) {
                             // 如果加载的内容是 HTML，说明服务端返回了 index 页面而不是 404 错误
                             throw new Error('Page is HTML, Markdown is Not Found');
                         }
