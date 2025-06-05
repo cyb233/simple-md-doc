@@ -26,4 +26,4 @@
 ## 已知问题
 
 - ~~若使用`CloudFlare Pages`部署，由于找不到的页面自动返回 index，所以无法验证请求的 md 是否存在（[示例](https://smd.shuvi.moe/#/another)）~~，所以建议使用`CloudFlare Worker`的`static assets`方式部署
-  - 尝试粗略地解决`Pages`部署自动返回 index 的问题：https://github.com/cyb233/simple-md-doc/blob/8977964569ea12e27a0136f3e8f6fe0cb895faab/index.html#L126
+  - 尝试粗略地解决`Pages`部署自动返回 index 的问题（但依然建议用`Worker`）：https://github.com/cyb233/simple-md-doc/blob/76acc041a51519cca8b4b89ca0d0b8edfc28e505/index.html#L125-L132
