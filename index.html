@@ -68,7 +68,7 @@
             if (!hash) {
                 let path = location.pathname;
                 // 只取目录部分
-                path = path.slice(0, path.lastIndexOf('/'));
+                path = path.slice(0, path.lastIndexOf('/') + 1);
                 hash = path + 'index'; // 默认加载 index
             }
             // 如果 hash 以 / 开头，去掉它
