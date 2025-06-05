@@ -125,9 +125,23 @@
                     document.querySelector('#content').innerHTML = marked.parse(md);
                 })
                 .catch((e) => {
-                    document.title = 'Index';
-                    document.querySelector('#content').textContent = `无法加载 ${file}.md 文件。`;
-                    console.error(`无法加载 ${file}.md 文件。`, e);
+                    // 新增：尝试加载同名 html 文件
+                    fetch(`/${file}.html`, { method: 'HEAD' })
+                        .then(res => {
+                            if (res.ok) {
+                                // 跳转到 html 页面
+                                location.href = `/${file}.html`;
+                            } else {
+                                document.title = 'Index';
+                                document.querySelector('#content').textContent = `无法加载 ${file}.md 文件。`;
+                                console.error(`无法加载 ${file}.md 文件。`, e);
+                            }
+                        })
+                        .catch(() => {
+                            document.title = 'Index';
+                            document.querySelector('#content').textContent = `无法加载 ${file}.md 文件。`;
+                            console.error(`无法加载 ${file}.md 文件。`, e);
+                        });
                 });
         }
 
