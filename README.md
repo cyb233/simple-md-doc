@@ -1,7 +1,8 @@
 # simple-md-doc
 
 一个简单的 Markdown 文档浏览器，支持通过 hash 跳转和渲染本地 Markdown 文件。
-> 诞生原因是只需要非常简单地处理Markdown，所以懒得找框架构建
+
+> 诞生原因是只需要非常简单地处理 Markdown，懒得找框架构建
 
 ## 功能
 
@@ -24,5 +25,5 @@
 
 ## 已知问题
 
-- 若使用`CloudFlare Pages`部署时，由于找不到的页面自动返回index，所以无法验证请求的md是否存在（[示例](https://smd.shuvi.moe/#/another)），所以建议使用`CloudFlare Worker`的`static assets`方式部署
-  - 尝试粗略地解决此问题（https://github.com/cyb233/simple-md-doc/blob/8977964569ea12e27a0136f3e8f6fe0cb895faab/index.html#L126）
+- ~~若使用`CloudFlare Pages`部署，由于找不到的页面自动返回 index，所以无法验证请求的 md 是否存在（[示例](https://smd.shuvi.moe/#/another)）~~，所以建议使用`CloudFlare Worker`的`static assets`方式部署
+  - 尝试粗略地解决`Pages`部署自动返回 index 的问题：https://github.com/cyb233/simple-md-doc/blob/8977964569ea12e27a0136f3e8f6fe0cb895faab/index.html#L126
