@@ -39,6 +39,13 @@
     <div id="back-btn-container"></div>
     <div id="content">加载中...</div>
     <script>
+        // 定义一些常量
+        const defaultFile = 'index';
+        const defaultTitle = 'Index';
+        const testHTMLonFail = true; // 是否在加载失败时尝试加载同名 HTML 文件
+        const testNotFoundFailbackToIndex = true; // 是否检查服务端因加载失败时回退到 index 页面而不是显示 404 错误
+
+
         function cleanUrl(href) {
             try {
                 href = encodeURI(href).replace(/%25/g, '%');
@@ -69,7 +76,7 @@
                 let path = location.pathname;
                 // 只取目录部分
                 path = path.slice(0, path.lastIndexOf('/') + 1);
-                hash = path + 'index'; // 默认加载 index
+                hash = path + defaultFile; // 默认加载 defaultFile
             }
             // 如果 hash 以 / 开头，去掉它
             if (hash.startsWith('/')) {
@@ -79,16 +86,16 @@
             if (hash.endsWith('.md')) {
                 hash = hash.slice(0, -3);
             }
-            // 如果 hash 指向的文件名为空，默认加载 index
+            // 如果 hash 指向的文件名为空，默认加载 defaultFile
             if (!hash || hash.endsWith('/')) {
-                hash += 'index';
+                hash += defaultFile;
             }
             return hash;
         }
 
         function isIndexPage() {
             let hash = getHash();
-            if (hash === 'index') {
+            if (hash === defaultFile) {
                 return true;
             }
             return false;
@@ -115,8 +122,14 @@
                     return response.text();
                 })
                 .then(md => {
+                    if (testNotFoundFailbackToIndex) {
+                        if (md.trim().startsWith('<!DOCTYPE html>')) {
+                            // 如果加载的内容是 HTML，说明服务端返回了 index 页面而不是 404 错误
+                            throw new Error('Page is HTML, Markdown is Not Found');
+                        }
+                    }
                     // 提取 Markdown 第一行标题
-                    let title = 'Index';
+                    let title = defaultTitle;
                     const match = md.match(/^#\s+(.+)$/m);
                     if (match) {
                         title = match[1].trim();
@@ -125,20 +138,26 @@
                     document.querySelector('#content').innerHTML = marked.parse(md);
                 })
                 .catch((e) => {
-                    // 新增：尝试加载同名 html 文件
+                    if (!testHTMLonFail) {
+                        document.title = defaultTitle;
+                        document.querySelector('#content').textContent = `无法加载 ${file}.md 文件。`;
+                        console.error(`无法加载 ${file}.md 文件。`, e);
+                        return;
+                    }
+                    // 尝试加载同名 html 文件
                     fetch(`/${file}.html`, { method: 'HEAD' })
                         .then(res => {
                             if (res.ok) {
                                 // 跳转到 html 页面
                                 location.href = `/${file}.html`;
                             } else {
-                                document.title = 'Index';
+                                document.title = defaultTitle;
                                 document.querySelector('#content').textContent = `无法加载 ${file}.md 文件。`;
                                 console.error(`无法加载 ${file}.md 文件。`, e);
                             }
                         })
                         .catch(() => {
-                            document.title = 'Index';
+                            document.title = defaultTitle;
                             document.querySelector('#content').textContent = `无法加载 ${file}.md 文件。`;
                             console.error(`无法加载 ${file}.md 文件。`, e);
                         });
