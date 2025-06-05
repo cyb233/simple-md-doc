@@ -25,3 +25,4 @@
 ## 已知问题
 
 - 若使用`CloudFlare Pages`部署时，由于找不到的页面自动返回index，所以无法验证请求的md是否存在（[示例](https://smd.shuvi.moe/#/another)），所以建议使用`CloudFlare Worker`的`static assets`方式部署
+  - 尝试粗略地解决此问题（https://github.com/cyb233/simple-md-doc/blob/8977964569ea12e27a0136f3e8f6fe0cb895faab/index.html#L126）
