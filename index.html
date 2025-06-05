@@ -39,7 +39,6 @@
     <div id="back-btn-container"></div>
     <div id="content">加载中...</div>
     <script>
-
         function cleanUrl(href) {
             try {
                 href = encodeURI(href).replace(/%25/g, '%');
@@ -48,6 +47,7 @@
             }
             return href;
         }
+
         marked.use({
             renderer: {
                 link({ href, title, tokens }) {
@@ -66,7 +66,10 @@
         function getHash() {
             let hash = location.hash.replace(/^#/, '')
             if (!hash) {
-                hash = location.pathname + 'index'; // 默认加载 index
+                let path = location.pathname;
+                // 只取目录部分
+                path = path.slice(0, path.lastIndexOf('/'));
+                hash = path + 'index'; // 默认加载 index
             }
             // 如果 hash 以 / 开头，去掉它
             if (hash.startsWith('/')) {
