@@ -234,7 +234,7 @@
             const file = getHash();
 
             // 如果是自身域名但不是md/html，先back再跳转
-            const ext = file.split('.').pop().toLowerCase();
+            const ext = file.includes('.') ? file.split('.').pop().toLowerCase() : '';
             if (ext && ext !== 'md' && ext !== 'html' && ext.length <= 5) {
                 history.back();
                 setTimeout(() => {
