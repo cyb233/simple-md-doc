@@ -74,11 +74,11 @@
             opacity: 1;
         }
 
-        .div-copy .tooltip-copy {
+        .div-copy .tooltip-copy:not(a .tooltip-copy) {
             position: relative;
         }
 
-        .div-copy .tooltip-copy::before {
+        .div-copy .tooltip-copy:not(a .tooltip-copy)::before {
             content: "Copied";
             position: absolute;
 
@@ -103,11 +103,11 @@
             transition: opacity 0.3s;
         }
 
-        .div-copy.click .tooltip-copy::before {
+        .div-copy.click .tooltip-copy:not(a .tooltip-copy)::before {
             opacity: 1;
         }
 
-        .div-copy .tooltip-copy::after {
+        .div-copy .tooltip-copy:not(a .tooltip-copy)::after {
             content: "";
             position: absolute;
 
@@ -128,7 +128,7 @@
             transition: opacity 0.3s;
         }
 
-        .div-copy.click .tooltip-copy::after {
+        .div-copy.click .tooltip-copy:not(a .tooltip-copy)::after {
             opacity: 1;
         }
 
@@ -144,8 +144,8 @@
             opacity: 1;
         }
 
-        .div-copy-inline.click .tooltip-copy::before,
-        .div-copy-inline.click .tooltip-copy::after {
+        .div-copy-inline.click .tooltip-copy:not(a .tooltip-copy)::before,
+        .div-copy-inline.click .tooltip-copy:not(a .tooltip-copy)::after {
             opacity: 1;
         }
     </style>
@@ -339,8 +339,8 @@
                 };
             });
 
-            // 处理未被 pre 包围的 code 元素
-            const allCodes = document.querySelectorAll('code:not(pre>code)');
+            // 处理未被 pre 和 a 包围的 code 元素
+            const allCodes = document.querySelectorAll('code:not(pre>code):not(a code)');
             allCodes.forEach(function (code) {
                 // 避免重复添加
                 if (code.querySelector('.div-copy-inline')) return;
